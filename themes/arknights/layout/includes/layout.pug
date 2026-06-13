@@ -1,0 +1,70 @@
+-
+  let pageTitle = ''
+  try {
+    pageTitle = page.title || config.subtitle || ''
+    if (typeof is_post === 'function' && is_post()) pageTitle = page.title
+    if (typeof is_archive === 'function' && is_archive()) pageTitle = __('menu.archive.plural')
+    if (typeof is_tag === 'function' && is_tag()) pageTitle = __('menu.tags.plural') + ': ' + page.tag
+    if (typeof is_category === 'function' && is_category()) pageTitle = __('menu.categories.plural') + ': ' + page.category
+    if (typeof is_month === 'function' && is_month()) pageTitle += ': ' + page.year + '/' + page.month
+    if (typeof is_year === 'function' && is_year()) pageTitle += ': ' + page.year
+  } catch (e) {
+    console.log("捕獲到主題變數未定義錯誤，已自動忽略:", e.message)
+  }
+  if (pageTitle) pageTitle += ' | '
+  pageTitle += config.title
+  const asideLogo = theme.aside.logo
+  const pjax = theme.pjax ? theme.pjax.enable : false
+  let searchConfig = null
+  if (typeof theme.search === 'object' && theme.search !== null && theme.search.enable === true) searchConfig = theme.search;
+  const configs = JSON.stringify({
+    root: config.root,
+    code_fold: (config.theme_config && config.theme_config.post) ? config.theme_config.post.code_fold : false,
+    search: searchConfig ? {
+      preload: searchConfig.preload,
+      activeHolder: __('search.activeHolder'),
+      blurHolder: __('search.blurHolder'),
+      noResult: __('search.noResult')
+    } : null,
+    code: {
+      codeInfo: __('code.codeInfo'),
+      copy: __('code.copy')
+    }
+  })
+
+  let htmlThemeMode = theme.color
+  if (theme.color === 'dark-only') {
+    htmlThemeMode = 'dark'
+  } else if (theme.color === 'light-only') {
+    htmlThemeMode = 'light'
+  }
+
+doctype html
+html(lang=config.language theme-mode=htmlThemeMode)
+  head
+    include ./meta-data.pug
+  body
+    if pjax
+      .loading(style="opacity: 0;")
+        .loadingBar.left
+        .loadingBar.right
+    main
+      include ./header.pug
+      article
+        if body
+          div!= body
+        else
+          block content
+        include ./bottom-btn.pug
+      include ./aside.pug
+    if theme.canvas_dust
+      canvas#canvas-dust
+
+    if theme.scripts && theme.scripts.length > 0
+      //- scripts list from config.yml
+      each url in theme.scripts
+        if url
+          if url[0] === '{' && url[url.length - 1] === '}'
+            script!=url
+          else
+            script(defer src=url)
