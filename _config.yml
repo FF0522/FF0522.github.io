@@ -100,8 +100,62 @@ ignore:
 theme: arknights
 
 theme_config:
+  favicon:
+    type: "image/x-icon"
+    href: "/favicon.ico"
+  canvas_dust: true
+  color: dark
+  build_time: false
+  background_image:
+    dark: https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg
+    light: /img/bk.jpg
+  menu:
+    Home: ""
+    About: about/
+    Archives: archives/
+  aside:
+    in_left: false
+    logo: https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png
+    logo_margin: 0
+    logo_border_radius: 0
+    dr: /
+    icp:
+    copyright:
+  social:
+    GitHub: https://github.com/FF0522 || fab fa-github
+    E-Mail: mailto:fengwang0715@gmail.com || fa fa-envelope
   post:
-    code_fold: false
+    date: true
+    updated: true
+    excerpt: true
+    count: true
+    time: true
+    code_fold: 15
+  toc:
+    list_number: true
+    max_depth: 6
+    min_depth: 1
+  archives:
+    categories_count: true
+    tags_count: true
+  search:
+    enable: true
+    content: true
+    preload: false
+    field: post
+    format: striptags
+  bgm:
+    enable: false
+  vercount:
+    enable: true
+    sitePV: true
+    siteUV: true
+    pagePV: true
+  mermaid:
+    enable: true
+    version: "11.12.2"
+  pjax:
+    enable: true
 
 
 # Deployment
