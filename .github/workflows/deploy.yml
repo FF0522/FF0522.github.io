@@ -1,0 +1,39 @@
+name: Deploy Hexo
+
+on:
+  push:
+    branches:
+      - main  # 或你的主分支名稱
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          npm install -g hexo-cli
+          npm install
+
+      - name: Clone Theme
+        run: |
+          git clone https://github.com/Yue-plus/hexo-theme-arknights.git themes/arknights --depth=1
+
+      - name: Build
+        run: hexo generate
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages  # 部署到 gh-pages 分支
